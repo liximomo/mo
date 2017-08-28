@@ -1,6 +1,14 @@
 {
   "/v2/act/list": {
-    "@rule": "json-schema",
+    "@rule": [
+      {
+        "name": "assign",
+        "option": {
+          "code": 200
+        }
+      },
+      "json-schema"
+    ],
     "@method": "get",
     "@resp": {
       "type": "object",

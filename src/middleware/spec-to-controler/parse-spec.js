@@ -1,6 +1,7 @@
 const Context = require('./Context');
 const DefaultPipeline = require('./pipes/Pipeline');
 const Interpolation = require('./pipes/Interpolation');
+const Assign = require('./pipes/Assign');
 const Sequence = require('./pipes/Sequence');
 const JsonSchema = require('./pipes/JsonSchema');
 
@@ -12,7 +13,7 @@ const OPTION_METHOD = '@method';
 const OPTION_RESP = '@resp';
 
 const prePipes = [{
-  pipe: Interpolation,
+  Pipe: Interpolation,
 }];
 const pipelineRegisty = {};
 
@@ -20,6 +21,7 @@ function registerPipeline(name, handler) {
   pipelineRegisty[name] = handler;
 }
 
+registerPipeline('assign', Assign);
 registerPipeline('sequence', Sequence);
 registerPipeline('json-schema', JsonSchema);
 registerPipeline(RULE_DEFAULT, DefaultPipeline);
@@ -35,7 +37,7 @@ function createHandle(pipes, resp) {
 
     for (let index = pipes.length - 1; index >= 0; index -= 1) {
       const rule = pipes[index];
-      const pipeInstance = new rule.pipe(rule.option);
+      const pipeInstance = new rule.Pipe(rule.option);
       data = await pipeInstance.value(data);
     }
     return data;
@@ -45,19 +47,22 @@ function createHandle(pipes, resp) {
 function normalizeRule(rule) {
   if (typeof rule === 'string') {
     return {
-      pipe: rule,
+      name: rule.toLocaleLowerCase(),
     };
   }
 
-  return rule;
+  return {
+    ...rule,
+    name: rule.name.toLocaleLowerCase(),
+  };
 }
 
 function getPipeline(rule) {
   const normalizedRule = normalizeRule(rule);
-  const pipelineName = normalizedRule.pipe;
+  const pipelineName = normalizedRule.name;
   return {
     ...normalizedRule,
-    pipe: pipelineRegisty[pipelineName],
+    Pipe: pipelineRegisty[pipelineName],
   };
 }
 
@@ -66,7 +71,7 @@ function normalizeSpec(spec) {
   normalized[OPTION_METHOD] =
     normalized[OPTION_METHOD] !== undefined ? normalized[OPTION_METHOD].toLowerCase() : METHOD_ALL;
   normalized[OPTION_RULE] =
-    normalized[OPTION_RULE] !== undefined ? normalized[OPTION_RULE].toLowerCase() : RULE_DEFAULT;
+    normalized[OPTION_RULE] !== undefined ? normalized[OPTION_RULE] : RULE_DEFAULT;
   normalized[OPTION_RESP] =
     normalized[OPTION_RESP] !== undefined ? normalized[OPTION_RESP] : spec;
 

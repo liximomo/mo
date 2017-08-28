@@ -1,4 +1,3 @@
-const glob = require('glob');
 const watcher = require('./watcher');
 const requireUncached = require('../../utils/requireUncached');
 
@@ -25,7 +24,8 @@ function addHandles(specFile) {
 
     console.log(`process spec files success:\n  ${specFile.join('\n  ')} `);
   } catch(error) {
-    console.error(new Error(`parse spec file ${specFile} error`));
+    console.log(error);
+    console.log(`parse spec file ${specFile} error`);
   }
 }
 
