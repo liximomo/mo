@@ -1,0 +1,52 @@
+{
+  "name": "mock-server",
+  "version": "0.1.0",
+  "bin": "./bin/mo",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cheerio": "^1.0.0-rc.2",
+    "chokidar": "^1.7.0",
+    "cors": "^2.8.4",
+    "express": "^4.15.4",
+    "gitbook-plugin-anchorjs": "^1.1.1",
+    "gitbook-plugin-edit-link": "^2.0.2",
+    "gitbook-plugin-github": "^2.0.0",
+    "gitbook-plugin-prism": "^2.3.0",
+    "json-schema-faker": "0.5.0-rc10",
+    "puppeteer": "^0.10.0",
+    "yargs": "^8.0.2"
+  },
+  "scripts": {
+    "start": "nodemon --watch src ./src/index.js",
+    "test": "node scripts/test.js --env=jsdom",
+    "docs:clean": "rimraf _book",
+    "docs:prepare": "gitbook install",
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:liximomo/mo gh-pages --force"
+  },
+  "devDependencies": {
+    "gitbook-cli": "^2.3.2",
+    "nodemon": "^1.11.0",
+    "rimraf": "^2.6.1"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2017,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "extends": "eslint:recommended",
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "rules": {
+      "no-console": 1
+    }
+  }
+}

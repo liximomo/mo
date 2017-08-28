@@ -1,0 +1,79 @@
+#!/usr/bin/env node
+
+const yargs = require('yargs')
+const packageInfo = require('../package.json');
+const runApp = require('../src/index');
+const { generateSpecFile } = require('../src/module/schema-to-api-spec');
+const getAbsolutePath = require('../src/utils/getAbsolutePath');
+
+
+yargs
+  .command(
+    'api2spec',
+    'generate json schema fron api doc',
+    yargs => yargs
+      .usage('Usage: $0 api2spec -u <url> [filename]')
+      .option('url', {
+        alias: 'u',
+        demandOption: true,
+        describe: 'url of the api doc',
+        type: 'string',
+      })
+      .help(),
+    argv => {
+      let filename = argv._[1];
+      filename = getAbsolutePath(filename !== undefined ? filename : 'specs/apidoc-spec.json');
+
+      generateSpecFile(argv.url, getAbsolutePath(filename));
+    }
+  );
+
+
+yargs
+  .command(
+    'serve',
+    'run mock server',
+    yargs => yargs
+      .usage('Usage: $0 serve [option]')
+      .option('port', {
+        alias: 'p',
+        default: 9000,
+        demandOption: false,
+        describe: 'port to listen',
+        type: 'number',
+      }).option('mount', {
+        alias: 'm',
+        default: '/',
+        demandOption: false,
+        describe: 'mount path',
+        type: 'string',
+      }).option('specs', {
+        alias: 's',
+        default: 'specs',
+        demandOption: false,
+        describe: 'specification folder',
+        type: 'string',
+        coerce: getAbsolutePath,
+      })
+      .help(),
+    argv => {
+      runApp({
+        port: argv.port,
+        mount: argv.mount,
+        specs: argv.specs,
+      });
+    }
+  )
+  .argv;
+  
+yargs
+  .version(packageInfo.version)
+  .help()
+  .argv;
+
+// runApp({
+//   specFile: program.spec,
+//   port: program.port,
+//   mount: program.mount,
+// });
+
