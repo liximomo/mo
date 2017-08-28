@@ -5,6 +5,12 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "repository": {
+    "url": "https://github.com/liximomo/mo.git",
+    "type": "git"
+  },
+  "author": "liximomo <liximomo@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.17.2",
     "cheerio": "^1.0.0-rc.2",
@@ -24,8 +30,9 @@
     "test": "node scripts/test.js --env=jsdom",
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",
+    "docs:build": "npm run docs:prepare && gitbook build",
     "docs:watch": "npm run docs:prepare && gitbook serve",
-    "docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:liximomo/mo gh-pages --force"
+    "docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:liximomo/mo.git gh-pages --force"
   },
   "devDependencies": {
     "gitbook-cli": "^2.3.2",
