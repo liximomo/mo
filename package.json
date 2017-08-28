@@ -1,7 +1,7 @@
 {
-  "name": "mock-server",
+  "name": "momock",
   "version": "0.1.0",
-  "bin": "./bin/mo",
+  "bin": "./bin/momock",
   "engines": {
     "node": ">=8.0.0"
   },
