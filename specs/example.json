@@ -1,5 +1,5 @@
 {
-  "/v2/act/list": {
+  "/act/list": {
     "@rule": [
       {
         "name": "assign",

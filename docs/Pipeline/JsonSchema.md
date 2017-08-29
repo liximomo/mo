@@ -10,4 +10,4 @@ null
 json schema
 
 ## ouput
-根据 content 的 schema 差生响应的 json 数据
+根据 `content` 的 schema 产生响应的 json 数据

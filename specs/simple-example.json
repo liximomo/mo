@@ -12,7 +12,7 @@
       }
     ]
   },
-  "/api/swChat": {
+  "/api/sequence": {
     "@rule": "sequence",
     "@resp": [
       {
@@ -40,6 +40,35 @@
             "content": "9"
           }
         ]
+      }
+    ]
+  },
+  "/api/resp": {
+    "@rule": "resp-simple",
+    "@resp": {
+      "id": "520",
+      "type": 0,
+      "time": 1503543346,
+      "roomId": "id_{index}",
+      "content": "9"
+    }
+  },
+  "/api/resp-sequence": {
+    "@rule": ["resp-simple", "sequence"],
+    "@resp": [
+      {
+        "id": "519",
+        "type": 0,
+        "time": 1503543346,
+        "roomId": "id_{index}",
+        "content": "{time}"
+      },
+      {
+        "id": "520",
+        "type": 0,
+        "time": 1503543346,
+        "roomId": "id_{index}",
+        "content": "9"
       }
     ]
   }

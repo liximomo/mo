@@ -10,4 +10,4 @@ null
 数组
 
 ## ouput
-依次返回 content 的每一项
+依次返回 `input` 的每一项

@@ -70,10 +70,3 @@ yargs
   .version(packageInfo.version)
   .help()
   .argv;
-
-// runApp({
-//   specFile: program.spec,
-//   port: program.port,
-//   mount: program.mount,
-// });
-

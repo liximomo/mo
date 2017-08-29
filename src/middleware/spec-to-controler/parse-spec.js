@@ -4,6 +4,7 @@ const Interpolation = require('./pipes/Interpolation');
 const Assign = require('./pipes/Assign');
 const Sequence = require('./pipes/Sequence');
 const JsonSchema = require('./pipes/JsonSchema');
+const RespSimple = require('./pipes/RespSimple');
 
 const METHOD_ALL = '$$method_all';
 const RULE_DEFAULT = '$$rule_default';
@@ -24,6 +25,7 @@ function registerPipeline(name, handler) {
 registerPipeline('assign', Assign);
 registerPipeline('sequence', Sequence);
 registerPipeline('json-schema', JsonSchema);
+registerPipeline('resp-simple', RespSimple);
 registerPipeline(RULE_DEFAULT, DefaultPipeline);
 
 function createHandle(pipes, resp) {
