@@ -50,7 +50,7 @@ const getAvaliableAdress = host => {
 function startApp(userOption) {
   const option = {
     ...defaultOption,
-    userOption,
+    ...userOption,
   };
 
   const app = new Express();
