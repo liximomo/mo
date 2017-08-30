@@ -14,7 +14,7 @@ const rules = [{
   test: /(integer|int)/i,
   type: TYPE_INTEGER,
 }, {
-  test: /(number|decimal)/i,
+  test: /(number|decimal|double)/i,
   type: TYPE_NUMBER,
 }, {
   test: /(string|date)/i,
@@ -36,24 +36,28 @@ const rules = [{
 }];
 
 function parseType(typeString) {
+  const typeInfo = {
+    type: TYPE_OBJECT,
+    meta: {
+      required: true,
+    }
+  };
+  
   const match = rules.find(rule => {
     return rule.test.test(typeString);
   });
 
   if (match === undefined) {
-    console.log(typeString);
+    console.warn(`[warn]: 不能识别的类型 '${typeString}'`);
+    return typeInfo;
   }
 
-  const typeInfo = {};
   typeInfo.type = match.type;
-  typeInfo.meta = {
-    required: true,
-  };
   if (match.enhance) {
     match.enhance(typeInfo, typeString);
   }
   return typeInfo;
-};
+}
 
 function typeToJsonSchema(keyInfo) {
   let result = {};
@@ -89,7 +93,7 @@ function typeToJsonSchema(keyInfo) {
   }
 
   return result;
-};
+}
 
 module.exports = {
   TYPE_INTEGER,

@@ -1,8 +1,6 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
-const fs = require('fs');
 const { URL } = require('url');
-const { inspect } = require('util');
 const { parseType, typeToJsonSchema } = require('./type');
 
 function toArray(arrayLike) {
@@ -15,7 +13,7 @@ function getLevel(str) {
   while (str.startsWith(LEVEL_INTENT)) {
     level += 1;
     str = str.slice(LEVEL_INTENT.length);
-  };
+  }
   return level;
 }
 
@@ -48,8 +46,6 @@ function getQuery($table) {
     properties: {},
   };
 
-  let lastLevel = -1;
-  let lastkey = 'root';
   let parents = {
     '-1': keyTree,
   };
@@ -69,14 +65,8 @@ function getQuery($table) {
     Object.assign(keyInfo, typeList[index]);
     // keyInfo.type = typeList[index];
 
-    parent = parents[level - 1];
+    const parent = parents[level - 1];
     parent.properties[keyName] = keyInfo;
-
-    // console.log('push', keyName);
-    // parents.push(keyInfo);
-
-    lastLevel = level;
-    lastkey = keyName;
   });
 
   return typeToJsonSchema(keyTree);
@@ -90,7 +80,7 @@ function getBlockInfo($blockTtitle) {
   let type;
   switch (titleText) {
     case '请求参数': {
-      type = 'params';
+      type = 'query';
       payload = getQuery($table);
       break;
     }
@@ -139,7 +129,7 @@ async function getJsonSchema(url) {
   browser.close();
 
   $ = cheerio.load(html);
-  const apiRootEls = $('div[id^="api-act-actList"]');
+  const apiRootEls = $('div[id^="api-"]');
 
   let infos = [];
   try {

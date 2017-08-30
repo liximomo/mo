@@ -5,15 +5,22 @@ const {
   OPTION_RULE,
   OPTION_METHOD,
   OPTION_RESP,
+  OPTION_QUERY,
 } = require('../../middleware/spec-to-controler');
 
 function schemaToApiSpec(schemas) {
   return schemas.reduce((result, schema) => {
-    result[schema.api] = {
+    const spec = {
       [OPTION_RULE]: 'json-schema',
       [OPTION_METHOD]: schema.method,
       [OPTION_RESP]: schema.respond,
     };
+
+    if (schema.query) {
+      spec[OPTION_QUERY] = schema.query;
+    }
+
+    result[schema.api] = spec;
     return result;
   }, {});
 }

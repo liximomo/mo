@@ -6,6 +6,7 @@ const {
   OPTION_RULE,
   OPTION_METHOD,
   OPTION_RESP,
+  OPTION_QUERY,
   createHandles,
 } = require('./parse-spec');
 
@@ -77,6 +78,7 @@ module.exports = {
   OPTION_RULE,
   OPTION_METHOD,
   OPTION_RESP,
+  OPTION_QUERY,
 };
 
 // const configGlobPattern = `/**/${vscodeFolder}/${configFileName}`;

@@ -12,6 +12,7 @@ const RULE_DEFAULT = '$$rule_default';
 const OPTION_RULE = '@rule';
 const OPTION_METHOD = '@method';
 const OPTION_RESP = '@resp';
+const OPTION_QUERY = '@query';
 
 const prePipes = [{
   Pipe: Interpolation,
@@ -106,4 +107,5 @@ module.exports = {
   OPTION_RULE,
   OPTION_METHOD,
   OPTION_RESP,
+  OPTION_QUERY,
 };
