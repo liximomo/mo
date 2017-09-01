@@ -1,4 +1,5 @@
-# A mock server
+# momock
+A mock server
 
 ## Requirements
 * nodejs >= 6.4.0
