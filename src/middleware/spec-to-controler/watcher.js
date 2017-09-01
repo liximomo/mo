@@ -1,6 +1,6 @@
-const chokidar = require('chokidar');
-const getAbsolutePath = require('../../utils/getAbsolutePath');
-const debounce = require('../../utils/debounce');
+import chokidar from 'chokidar';
+import getAbsolutePath from '../../utils/getAbsolutePath';
+import debounce from '../../utils/debounce';
 
 const nullFunc = () => null;
 
@@ -37,4 +37,4 @@ function watchSpec(target, {
     });
 }
 
-module.exports = watchSpec;
+export default watchSpec;

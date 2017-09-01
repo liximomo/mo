@@ -1,7 +1,7 @@
-const puppeteer = require('puppeteer');
-const cheerio = require('cheerio');
-const { URL } = require('url');
-const { parseType, typeToJsonSchema } = require('./type');
+import puppeteer from 'puppeteer';
+import cheerio from 'cheerio';
+import { URL } from 'url';
+import typeToJsonSchema, { parseType } from './type';
 
 function toArray(arrayLike) {
   return Array.prototype.slice.call(arrayLike);
@@ -117,7 +117,7 @@ function domToApiInfo($el) {
 }
 
 let $;
-async function getJsonSchema(url) {
+export default async function getJsonSchema(url) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url);
@@ -140,5 +140,3 @@ async function getJsonSchema(url) {
 
   return infos;
 }
-
-module.exports = getJsonSchema;

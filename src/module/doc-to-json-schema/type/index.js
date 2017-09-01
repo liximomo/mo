@@ -59,7 +59,7 @@ function parseType(typeString) {
   return typeInfo;
 }
 
-function typeToJsonSchema(keyInfo) {
+export default function typeToJsonSchema(keyInfo) {
   let result = {};
 
   delete keyInfo.meta;
@@ -95,7 +95,7 @@ function typeToJsonSchema(keyInfo) {
   return result;
 }
 
-module.exports = {
+export {
   TYPE_INTEGER,
   TYPE_NUMBER,
   TYPE_STRING,
@@ -103,5 +103,4 @@ module.exports = {
   TYPE_ARRAY,
   TYPE_OBJECT,
   parseType,
-  typeToJsonSchema,
 };

@@ -1,5 +1,5 @@
-const jsf = require('json-schema-faker');
-const Pipeline = require('./Pipeline');
+import jsf from 'json-schema-faker';
+import Pipeline from './Pipeline';
 
 class JsonSchema extends Pipeline {
   async valueGen(data) {
@@ -13,4 +13,4 @@ class JsonSchema extends Pipeline {
   }
 }
 
-module.exports = JsonSchema;
+export default JsonSchema;

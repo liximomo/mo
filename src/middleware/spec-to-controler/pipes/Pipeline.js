@@ -17,4 +17,4 @@ class Pipeline {
   }
 }
 
-module.exports = Pipeline;
+export default Pipeline;

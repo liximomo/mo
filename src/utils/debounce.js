@@ -25,4 +25,4 @@ function debounce(func, wait, { leading = true, trailing = true } = {}) {
   return wrapper;
 }
 
-module.exports = debounce;
+export default debounce;

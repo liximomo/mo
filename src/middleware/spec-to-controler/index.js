@@ -1,14 +1,14 @@
-const watcher = require('./watcher');
-const requireUncached = require('../../utils/requireUncached');
+import watcher from'./watcher';
+import requireUncached from '../../utils/requireUncached';
 
-const {
+import {
   METHOD_ALL,
   OPTION_RULE,
   OPTION_METHOD,
   OPTION_RESP,
   OPTION_QUERY,
   createHandles,
-} = require('./parse-spec');
+} from './parse-spec';
 
 let handleMap = {};
 
@@ -30,7 +30,7 @@ function addHandles(specFile) {
   }
 }
 
-function createMiddleWare(specFolder) {
+export default function createMiddleWare(specFolder) {
   const specFilePattern = `${specFolder}/**/*.json`;
   // const specfiles = glob.sync(
   //   specFilePattern,
@@ -73,12 +73,11 @@ function createMiddleWare(specFolder) {
   };
 }
 
-module.exports = {
-  createMiddleWare,
+export {
   OPTION_RULE,
   OPTION_METHOD,
   OPTION_RESP,
   OPTION_QUERY,
-};
+}
 
 // const configGlobPattern = `/**/${vscodeFolder}/${configFileName}`;

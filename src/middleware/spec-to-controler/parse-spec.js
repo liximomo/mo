@@ -1,10 +1,10 @@
-const Context = require('./Context');
-const DefaultPipeline = require('./pipes/Pipeline');
-const Interpolation = require('./pipes/Interpolation');
-const Assign = require('./pipes/Assign');
-const Sequence = require('./pipes/Sequence');
-const JsonSchema = require('./pipes/JsonSchema');
-const RespSimple = require('./pipes/RespSimple');
+import Context from './Context';
+import DefaultPipeline from './pipes/Pipeline';
+import Interpolation from './pipes/Interpolation';
+import Assign from './pipes/Assign';
+import Sequence from './pipes/Sequence';
+import JsonSchema from './pipes/JsonSchema';
+import RespSimple from './pipes/RespSimple';
 
 const METHOD_ALL = '$$method_all';
 const RULE_DEFAULT = '$$rule_default';
@@ -100,7 +100,7 @@ function createHandles(specifications) {
   }, {});
 }
 
-module.exports = {
+export {
   createHandles,
   registerPipeline,
   METHOD_ALL,

@@ -2,10 +2,9 @@
 
 const yargs = require('yargs')
 const packageInfo = require('../package.json');
-const runApp = require('../src/index');
-const { generateSpecFile } = require('../src/module/schema-to-api-spec');
-const getAbsolutePath = require('../src/utils/getAbsolutePath');
-
+const runApp = require('..');
+const { generateSpecFile } = require('../lib/module/schema-to-api-spec');
+const getAbsolutePath = require('../lib/utils/getAbsolutePath').default;
 
 yargs
   .command(
@@ -68,5 +67,6 @@ yargs
   
 yargs
   .version(packageInfo.version)
+  .completion()
   .help()
   .argv;

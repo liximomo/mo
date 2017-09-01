@@ -1,9 +1,11 @@
 {
   "name": "momock",
-  "version": "0.1.5",
+  "version": "0.1.6",
+  "main": "lib/main.js",
+  "module": "esm/main.js",
   "bin": "./bin/momock",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=6.4.0"
   },
   "repository": {
     "url": "https://github.com/liximomo/mo.git",
@@ -17,17 +19,17 @@
     "chokidar": "^1.7.0",
     "cors": "^2.8.4",
     "express": "^4.15.4",
-    "gitbook-plugin-anchorjs": "^1.1.1",
-    "gitbook-plugin-edit-link": "^2.0.2",
-    "gitbook-plugin-github": "^2.0.0",
-    "gitbook-plugin-prism": "^2.3.0",
     "json-schema-faker": "0.5.0-rc10",
     "puppeteer": "^0.10.0",
+    "regenerator-runtime": "^0.11.0",
     "yargs": "^8.0.2"
   },
   "scripts": {
-    "start": "nodemon --watch src ./src/index.js",
-    "test": "node scripts/test.js --env=jsdom",
+    "build": "npm run build:commonjs && npm run build:esm",
+    "build:commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:esm": "BABEL_ENV=ejs babel src --out-dir esm",
+    "dev": "rollup -c -w",
+    "test": "node test/test.js",
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",
     "docs:build": "npm run docs:prepare && gitbook build",
@@ -35,8 +37,11 @@
     "docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:liximomo/mo.git gh-pages --force"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^20.0.3",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-2": "^6.24.1",
     "gitbook-cli": "^2.3.2",
-    "nodemon": "^1.11.0",
     "rimraf": "^2.6.1"
   },
   "eslintConfig": {

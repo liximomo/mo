@@ -1,4 +1,4 @@
-const Pipeline = require('./Pipeline');
+import Pipeline from './Pipeline';
 
 function supplant(string, props) {
   return string.replace(/{([^{}]*)}/g, (match, expr) => {
@@ -28,4 +28,4 @@ class Interpolation extends Pipeline {
   }
 }
 
-module.exports = Interpolation;
+export default Interpolation;

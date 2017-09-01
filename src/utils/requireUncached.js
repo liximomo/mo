@@ -3,4 +3,4 @@ function requireUncached(module) {
   return require(module);
 }
 
-module.exports = requireUncached;
+export default requireUncached;

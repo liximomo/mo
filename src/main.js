@@ -1,7 +1,9 @@
-const Express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser')
-const { createMiddleWare } = require('./middleware/spec-to-controler');
+import './polyfills';
+
+import Express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import createMiddleWare from './middleware/spec-to-controler';
 
 const host = '0.0.0.0';
 const defaultOption = {

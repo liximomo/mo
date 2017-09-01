@@ -1,4 +1,4 @@
-const Pipeline = require('./Pipeline');
+import Pipeline from './Pipeline';
 
 class Sequence extends Pipeline {
   valueGen(data) {
@@ -17,4 +17,4 @@ class Sequence extends Pipeline {
   }
 }
 
-module.exports = Sequence;
+export default Sequence;
