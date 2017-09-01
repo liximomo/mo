@@ -1,18 +1,18 @@
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-const TYPE_INTEGER = 'integer';
-const TYPE_NUMBER = 'number';
-const TYPE_STRING = 'string';
-const TYPE_BOOLEAN = 'boolean';
-const TYPE_ARRAY = 'array';
-const TYPE_OBJECT = 'object';
+var TYPE_INTEGER = 'integer';
+var TYPE_NUMBER = 'number';
+var TYPE_STRING = 'string';
+var TYPE_BOOLEAN = 'boolean';
+var TYPE_ARRAY = 'array';
+var TYPE_OBJECT = 'object';
 
 function arrayEnHance(typeInfo, typeStr) {
-  const subTypeStr = typeStr.match(/([a-zA-Z[\]]+)\[\]$/i);
+  var subTypeStr = typeStr.match(/([a-zA-Z[\]]+)\[\]$/i);
   return typeInfo.items = parseType(subTypeStr || TYPE_STRING);
 }
 
-const rules = [{
+var rules = [{
   test: /(integer|int)/i,
   type: TYPE_INTEGER
 }, {
@@ -38,19 +38,19 @@ const rules = [{
 }];
 
 function parseType(typeString) {
-  const typeInfo = {
+  var typeInfo = {
     type: TYPE_OBJECT,
     meta: {
       required: true
     }
   };
 
-  const match = rules.find(rule => {
+  var match = rules.find(function (rule) {
     return rule.test.test(typeString);
   });
 
   if (match === undefined) {
-    console.warn(`[warn]: 不能识别的类型 '${typeString}'`);
+    console.warn('[warn]: \u4E0D\u80FD\u8BC6\u522B\u7684\u7C7B\u578B \'' + typeString + '\'');
     return typeInfo;
   }
 
@@ -62,18 +62,18 @@ function parseType(typeString) {
 }
 
 export default function typeToJsonSchema(keyInfo) {
-  let result = {};
+  var result = {};
 
   delete keyInfo.meta;
   delete keyInfo.level;
   result.type = keyInfo.type;
   if (result.type === TYPE_OBJECT) {
-    const properties = keyInfo.properties;
+    var properties = keyInfo.properties;
     if (properties !== undefined) {
       result.required = [];
       result.properties = {};
-      Object.keys(properties).forEach(propertyName => {
-        const propertyInfo = properties[propertyName];
+      Object.keys(properties).forEach(function (propertyName) {
+        var propertyInfo = properties[propertyName];
         if (propertyInfo.meta.required) {
           result.required.push(propertyName);
         }

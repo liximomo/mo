@@ -7,8 +7,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import createMiddleWare from './middleware/spec-to-controler';
 
-const host = '0.0.0.0';
-const defaultOption = {
+var host = '0.0.0.0';
+var defaultOption = {
   specs: 'specs',
   port: 9000,
   mount: '/'
@@ -16,7 +16,7 @@ const defaultOption = {
 
 // eslint-disable-next-line no-unused-vars
 function errorHandler(err, req, res, next) {
-  const error = {
+  var error = {
     data: err,
     error: true,
     message: err.message,
@@ -26,9 +26,9 @@ function errorHandler(err, req, res, next) {
 }
 
 function getLocalIpAddress() {
-  const os = require('os');
-  const ifaces = os.networkInterfaces();
-  const ips = [];
+  var os = require('os');
+  var ifaces = os.networkInterfaces();
+  var ips = [];
   Object.keys(ifaces).forEach(function (ifname) {
 
     ifaces[ifname].forEach(function (iface) {
@@ -42,8 +42,8 @@ function getLocalIpAddress() {
   return ips;
 }
 
-const getAvaliableAdress = host => {
-  const address = [host];
+var getAvaliableAdress = function getAvaliableAdress(host) {
+  var address = [host];
   if (~['0.0.0.0', 'localhost', '127.0.0.1'].indexOf(host)) {
     return ['localhost'].concat(getLocalIpAddress());
   }
@@ -52,12 +52,12 @@ const getAvaliableAdress = host => {
 };
 
 function startApp(userOption) {
-  const option = _extends({}, defaultOption, userOption);
+  var option = _extends({}, defaultOption, userOption);
 
-  const app = new Express();
+  var app = new Express();
 
   app.use(cors({
-    'origin': (origin, cb) => {
+    'origin': function origin(_origin, cb) {
       return cb(null, true);
     },
     'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -70,14 +70,14 @@ function startApp(userOption) {
   app.use(option.mount, createMiddleWare(option.specs));
   app.use(errorHandler);
 
-  app.listen(option.port, host, error => {
+  app.listen(option.port, host, function (error) {
     if (error) {
       throw error;
     }
 
     console.log('app is running on:');
-    getAvaliableAdress(host).forEach(host => {
-      console.log(`  http://${host}:${option.port}`);
+    getAvaliableAdress(host).forEach(function (host) {
+      console.log('  http://' + host + ':' + option.port);
     });
   });
 }

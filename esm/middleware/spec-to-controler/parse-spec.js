@@ -10,18 +10,18 @@ import Sequence from './pipes/Sequence';
 import JsonSchema from './pipes/JsonSchema';
 import RespSimple from './pipes/RespSimple';
 
-const METHOD_ALL = '$$method_all';
-const RULE_DEFAULT = '$$rule_default';
+var METHOD_ALL = '$$method_all';
+var RULE_DEFAULT = '$$rule_default';
 
-const OPTION_RULE = '@rule';
-const OPTION_METHOD = '@method';
-const OPTION_RESP = '@resp';
-const OPTION_QUERY = '@query';
+var OPTION_RULE = '@rule';
+var OPTION_METHOD = '@method';
+var OPTION_RESP = '@resp';
+var OPTION_QUERY = '@query';
 
-const prePipes = [{
+var prePipes = [{
   Pipe: Interpolation
 }];
-const pipelineRegisty = {};
+var pipelineRegisty = {};
 
 function registerPipeline(name, handler) {
   pipelineRegisty[name] = handler;
@@ -34,21 +34,51 @@ registerPipeline('resp-simple', RespSimple);
 registerPipeline(RULE_DEFAULT, DefaultPipeline);
 
 function createHandle(pipes, resp) {
-  const context = new Context();
+  var _this = this;
 
-  return _asyncToGenerator(function* () {
-    let data = {
-      context: context.getContext(),
-      content: resp
-    };
+  var context = new Context();
 
-    for (let index = pipes.length - 1; index >= 0; index -= 1) {
-      const rule = pipes[index];
-      const pipeInstance = new rule.Pipe(rule.option);
-      data = yield pipeInstance.value(data);
-    }
-    return data;
-  });
+  return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var data, index, rule, pipeInstance;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            data = {
+              context: context.getContext(),
+              content: resp
+            };
+            index = pipes.length - 1;
+
+          case 2:
+            if (!(index >= 0)) {
+              _context.next = 11;
+              break;
+            }
+
+            rule = pipes[index];
+            pipeInstance = new rule.Pipe(rule.option);
+            _context.next = 7;
+            return pipeInstance.value(data);
+
+          case 7:
+            data = _context.sent;
+
+          case 8:
+            index -= 1;
+            _context.next = 2;
+            break;
+
+          case 11:
+            return _context.abrupt('return', data);
+
+          case 12:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, _this);
+  }));
 }
 
 function normalizeRule(rule) {
@@ -64,15 +94,15 @@ function normalizeRule(rule) {
 }
 
 function getPipeline(rule) {
-  const normalizedRule = normalizeRule(rule);
-  const pipelineName = normalizedRule.name;
+  var normalizedRule = normalizeRule(rule);
+  var pipelineName = normalizedRule.name;
   return _extends({}, normalizedRule, {
     Pipe: pipelineRegisty[pipelineName]
   });
 }
 
 function normalizeSpec(spec) {
-  const normalized = Object.assign({}, spec);
+  var normalized = Object.assign({}, spec);
   normalized[OPTION_METHOD] = normalized[OPTION_METHOD] !== undefined ? normalized[OPTION_METHOD].toLowerCase() : METHOD_ALL;
   normalized[OPTION_RULE] = normalized[OPTION_RULE] !== undefined ? normalized[OPTION_RULE] : RULE_DEFAULT;
   normalized[OPTION_RESP] = normalized[OPTION_RESP] !== undefined ? normalized[OPTION_RESP] : spec;
@@ -81,18 +111,18 @@ function normalizeSpec(spec) {
 }
 
 function getPipelines(spec) {
-  const rule = spec[OPTION_RULE];
-  const userPipes = [].concat(rule).map(getPipeline);
-  const pipes = prePipes.concat(userPipes);
+  var rule = spec[OPTION_RULE];
+  var userPipes = [].concat(rule).map(getPipeline);
+  var pipes = prePipes.concat(userPipes);
   return pipes;
 }
 
 function createHandles(specifications) {
-  return specifications.reduce((result, item) => {
-    const spec = normalizeSpec(item);
-    const method = spec[OPTION_METHOD];
-    const pipes = getPipelines(spec);
-    const response = spec[OPTION_RESP];
+  return specifications.reduce(function (result, item) {
+    var spec = normalizeSpec(item);
+    var method = spec[OPTION_METHOD];
+    var pipes = getPipelines(spec);
+    var response = spec[OPTION_RESP];
 
     result[method] = createHandle(pipes, response);
     return result;

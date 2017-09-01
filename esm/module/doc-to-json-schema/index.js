@@ -10,8 +10,8 @@ function toArray(arrayLike) {
 }
 
 function getLevel(str) {
-  const LEVEL_INTENT = '  ';
-  let level = 0;
+  var LEVEL_INTENT = '  ';
+  var level = 0;
   while (str.startsWith(LEVEL_INTENT)) {
     level += 1;
     str = str.slice(LEVEL_INTENT.length);
@@ -20,41 +20,41 @@ function getLevel(str) {
 }
 
 function getQuery($table) {
-  const rows = $table.find('tbody tr');
-  const rowArray = toArray(rows);
-  const typeList = [];
-  const rawKeys = [];
+  var rows = $table.find('tbody tr');
+  var rowArray = toArray(rows);
+  var typeList = [];
+  var rawKeys = [];
 
-  rowArray.forEach(row => {
-    const $row = $(row);
-    const $key = $row.find('td:nth-child(1)');
-    const isOption = $key.find('.label-optional').length > 0;
-    const typeString = $row.find('td:nth-child(2)').text().trim();
-    const type = parseType(typeString);
+  rowArray.forEach(function (row) {
+    var $row = $(row);
+    var $key = $row.find('td:nth-child(1)');
+    var isOption = $key.find('.label-optional').length > 0;
+    var typeString = $row.find('td:nth-child(2)').text().trim();
+    var type = parseType(typeString);
     type.meta.required = !isOption;
     typeList.push(type);
 
     $key.find('span').remove('span');
-    const key = $key.text().trimRight();
+    var key = $key.text().trimRight();
     rawKeys.push(key);
   });
 
   // console.log(inspect(typeList, { depth: 5 }));
   // console.log(inspect(rawKeys, { depth: 5 }));
 
-  const keyTree = {
+  var keyTree = {
     root: true,
     type: 'object',
     properties: {}
   };
 
-  let parents = {
+  var parents = {
     '-1': keyTree
   };
-  rawKeys.forEach((rawkey, index) => {
-    const level = getLevel(rawkey);
-    const keyInfo = {};
-    const keyName = rawkey.trim();
+  rawKeys.forEach(function (rawkey, index) {
+    var level = getLevel(rawkey);
+    var keyInfo = {};
+    var keyName = rawkey.trim();
 
     parents[level] = keyInfo;
     // if (level < lastLevel) {
@@ -67,7 +67,7 @@ function getQuery($table) {
     Object.assign(keyInfo, typeList[index]);
     // keyInfo.type = typeList[index];
 
-    const parent = parents[level - 1];
+    var parent = parents[level - 1];
     parent.properties[keyName] = keyInfo;
   });
 
@@ -76,10 +76,10 @@ function getQuery($table) {
 }
 
 function getBlockInfo($blockTtitle) {
-  const titleText = $blockTtitle.text().trim();
-  const $table = $blockTtitle.next();
-  let payload;
-  let type;
+  var titleText = $blockTtitle.text().trim();
+  var $table = $blockTtitle.next();
+  var payload = void 0;
+  var type = void 0;
   switch (titleText) {
     case '请求参数':
       {
@@ -99,54 +99,82 @@ function getBlockInfo($blockTtitle) {
   }
 
   return {
-    type,
-    payload
+    type: type,
+    payload: payload
   };
 }
 
 function domToApiInfo($el) {
-  const info = {};
+  var info = {};
   info.method = $el.find('.type').text().trim();
-  const apiUrl = $el.find(`[data-type="${info.method}"] .pln`).text().trim();
-  const url = new URL(apiUrl);
+  var apiUrl = $el.find('[data-type="' + info.method + '"] .pln').text().trim();
+  var url = new URL(apiUrl);
 
   info.api = url.pathname;
-  const blockTitles = $el.find('h2');
-  blockTitles.each((_, el) => {
-    const block = getBlockInfo($(el));
+  var blockTitles = $el.find('h2');
+  blockTitles.each(function (_, el) {
+    var block = getBlockInfo($(el));
     info[block.type] = block.payload;
   });
 
   return info;
 }
 
-let $;
-export default (() => {
-  var _ref = _asyncToGenerator(function* (url) {
-    const browser = yield puppeteer.launch();
-    const page = yield browser.newPage();
-    yield page.goto(url);
-    // await page.goto('http://wiki.lanyicj.cn/apidoc/lanyife/wiki/');
-    yield page.waitForSelector('section[id^="api-"]');
-    // await page.waitForSelector('section[id="api-ver-verswitch"]');
+var $ = void 0;
+export default (function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(url) {
+    var browser, page, html, apiRootEls, infos;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return puppeteer.launch();
 
-    const html = yield page.content();
-    browser.close();
+          case 2:
+            browser = _context.sent;
+            _context.next = 5;
+            return browser.newPage();
 
-    $ = cheerio.load(html);
-    const apiRootEls = $('div[id^="api-"]');
+          case 5:
+            page = _context.sent;
+            _context.next = 8;
+            return page.goto(url);
 
-    let infos = [];
-    try {
-      infos = toArray(apiRootEls).map(function (el) {
-        return domToApiInfo($(el));
-      });
-    } catch (error) {
-      console.error(error);
-    }
+          case 8:
+            _context.next = 10;
+            return page.waitForSelector('section[id^="api-"]');
 
-    return infos;
-  });
+          case 10:
+            _context.next = 12;
+            return page.content();
+
+          case 12:
+            html = _context.sent;
+
+            browser.close();
+
+            $ = cheerio.load(html);
+            apiRootEls = $('div[id^="api-"]');
+            infos = [];
+
+            try {
+              infos = toArray(apiRootEls).map(function (el) {
+                return domToApiInfo($(el));
+              });
+            } catch (error) {
+              console.error(error);
+            }
+
+            return _context.abrupt('return', infos);
+
+          case 19:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
 
   function getJsonSchema(_x) {
     return _ref.apply(this, arguments);
