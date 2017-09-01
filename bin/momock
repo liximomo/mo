@@ -2,7 +2,7 @@
 
 const yargs = require('yargs')
 const packageInfo = require('../package.json');
-const runApp = require('..');
+const runApp = require('../lib/main.js');
 const { generateSpecFile } = require('../lib/module/schema-to-api-spec');
 const getAbsolutePath = require('../lib/utils/getAbsolutePath').default;
 
