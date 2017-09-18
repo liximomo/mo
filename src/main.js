@@ -66,7 +66,9 @@ function startApp(userOption) {
     'credentials': true,
     'preflightContinue': false
   }));
-  app.use(bodyParser());
+
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
   
   app.use(option.mount, createMiddleWare(option.specs));
   app.use(errorHandler);
