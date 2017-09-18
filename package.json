@@ -1,6 +1,6 @@
 {
   "name": "momock",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "lib/main.js",
   "module": "esm/main.js",
   "bin": "./bin/momock",
@@ -28,7 +28,6 @@
     "build": "npm run build:commonjs && npm run build:esm",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:esm": "cross-env BABEL_ENV=esm babel src --out-dir esm",
-    "dev": "rollup -c -w",
     "test": "node test/test.js",
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",

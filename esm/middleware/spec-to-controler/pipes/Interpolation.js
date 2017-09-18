@@ -10,17 +10,57 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 import Pipeline from './Pipeline';
 
+// const isObject = target =>
+//   Object.prototype.toString.call(target) === '[object Object]';
+
+// const typeMap = {
+//   'number': Number,
+// };
+
 function supplant(string, props) {
-  return string.replace(/{([^{}]*)}/g, function (match, expr) {
+  var result = string.replace(/{([^{}]*)}/g, function (match, expr) {
     var value = props[expr];
     return typeof value === 'string' || typeof value === 'number' ? value : match;
   });
+
+  result = result.replace(/"{#([^{}]*)}"/g, function (match, expr) {
+    var value = props[expr];
+    return typeof value === 'string' || typeof value === 'number' ? value : match;
+  });
+  return result;
 }
 
 function interpolate(obj, props) {
   var str = JSON.stringify(obj);
   return supplant(str, props);
 }
+
+// function typeReconcile(input) {
+//   const result = {
+//     ...input,
+//   };
+
+//   Object.keys(input).filter(key => key.endsWith('@number'))
+//     .forEach(key => {
+//       const propertyValue = input[key];
+//       if (isObject(propertyValue)) {
+//         result[key] = typeReconcile(propertyValue);
+//         return;
+//       }
+
+//       const matches = key.match(/(.*)@(.*)$/i);
+//       const [property, typeMagic] = matches;
+//       const type = typeMagic.slice(1);
+//       const typeConstructer = typeMap[type];
+//       if (typeConstructer === undefined) {
+//         return;
+//       }
+
+//       result[property] = new typeConstructer(propertyValue).valueOf();
+//     });
+
+//   return result;
+// }
 
 var Interpolation = function (_Pipeline) {
   _inherits(Interpolation, _Pipeline);

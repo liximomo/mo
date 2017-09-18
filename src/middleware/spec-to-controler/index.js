@@ -64,7 +64,7 @@ export default function createMiddleWare(specFolder) {
 
     let result = {};
     try {
-      result = await handle();
+      result = await handle(req);
     } catch(error) {
       console.log(error);
     }

@@ -76,7 +76,7 @@ export default function createMiddleWare(specFolder) {
               result = {};
               _context.prev = 10;
               _context.next = 13;
-              return handle();
+              return handle(req);
 
             case 13:
               result = _context.sent;

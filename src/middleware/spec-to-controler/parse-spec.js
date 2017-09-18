@@ -31,17 +31,26 @@ registerPipeline(RULE_DEFAULT, DefaultPipeline);
 
 function createHandle(pipes, resp) {
   const context = new Context();
+  const pipeInstanceList = pipes.reduceRight((list, pipe) => {
+    const pipeInstance = new pipe.Pipe(pipe.option);
+    list.push(pipeInstance);
+    return list;
+  }, []);
 
-  return async () => {
+  return async (req) => {
     let data = {
       context: context.getContext(),
       content: resp,
+      req,
     };
 
-    for (let index = pipes.length - 1; index >= 0; index -= 1) {
-      const rule = pipes[index];
-      const pipeInstance = new rule.Pipe(rule.option);
-      data = await pipeInstance.value(data);
+    // return pipeInstanceList.reduce(async (output, pipe) => {
+    //   const result = await pipe.value(output);
+    //   return result;
+    // }, data);
+    for (let index = 0; index < pipeInstanceList.length; index += 1) {
+      const pipe = pipeInstanceList[index];
+      data = await pipe.value(data);
     }
     return data;
   };
